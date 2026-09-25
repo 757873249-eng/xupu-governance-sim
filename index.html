@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#15231f">
+  <meta name="description" content="基于许浦村拆违史料的城中村治理决策模拟">
+  <title>许浦治理现场</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;900&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="noise"></div>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">许</span>
+      <div><strong>许浦治理现场</strong><small>城中村整体性治理决策模拟</small></div>
+    </div>
+    <div class="top-actions">
+      <button class="icon-button" id="sourcesBtn" title="史料依据" aria-label="史料依据">⌕</button>
+      <button class="icon-button" id="soundBtn" title="声音开关" aria-label="声音开关">◉</button>
+      <button class="quiet-button" id="restartBtn">重新开始</button>
+    </div>
+  </header>
+
+  <main id="app">
+    <section class="intro-screen active" id="introScreen">
+      <div class="intro-copy">
+        <p class="eyebrow">上海 · 2015年10月</p>
+        <h1>51天。<br>一座村庄的秩序重建。</h1>
+        <p class="lead">你将担任许浦村环境综合整治专班负责人。57万平方米违建、近三百家企业、数万名外来人口，以及依赖租金生活的本地家庭，都在等待你的决定。</p>
+        <div class="briefing-grid">
+          <div><b>1:14</b><span>户籍与外来人口比例</span></div>
+          <div><b>57.2万㎡</b><span>违法建筑存量</span></div>
+          <div><b>51天</b><span>历史行动周期</span></div>
+        </div>
+        <button class="primary-button" id="startBtn">进入指挥部 <span>›</span></button>
+        <p class="source-note">模拟取材于公开报道与案例材料。人物选择为教学重构，不代表对具体个人的评价。</p>
+      </div>
+      <div class="intro-map" aria-hidden="true">
+        <div class="river river-a"></div><div class="river river-b"></div>
+        <div class="map-label label-river">许浦港</div>
+        <div class="district d1"></div><div class="district d2"></div><div class="district d3"></div>
+        <div class="building-cluster cluster-a"></div><div class="building-cluster cluster-b"></div>
+        <div class="pulse-point p1"></div><div class="pulse-point p2"></div><div class="pulse-point p3"></div>
+        <div class="stamp">内部研判<br><strong>硬骨头</strong></div>
+      </div>
+    </section>
+
+    <section class="game-screen" id="gameScreen">
+      <aside class="status-panel">
+        <div class="day-block"><span>整治进程</span><strong>第 <em id="dayValue">1</em> 天</strong><small id="phaseName">摸底与定策</small></div>
+        <div class="progress-track"><i id="dayProgress"></i></div>
+        <div class="metrics" id="metrics"></div>
+        <div class="team-state">
+          <div class="section-label">专班状态</div>
+          <div class="team-row"><span>干部精力</span><div><i id="energyBar"></i></div><b id="energyValue">80</b></div>
+          <div class="team-row"><span>财政余量</span><div><i id="budgetBar"></i></div><b id="budgetValue">70</b></div>
+        </div>
+        <button class="log-button" id="logBtn"><span>▤</span> 查看工作日志 <b id="logCount">0</b></button>
+      </aside>
+
+      <section class="field-panel">
+        <div class="field-toolbar">
+          <div><span class="live-dot"></span><b id="weatherText">指挥部实时态势</b></div>
+          <div class="legend"><span><i class="risk-dot"></i>风险</span><span><i class="done-dot"></i>已治理</span></div>
+        </div>
+        <div class="village-map" id="villageMap">
+          <div class="map-river"><span>许浦港</span></div>
+          <div class="road road-1"></div><div class="road road-2"></div>
+          <button class="zone enterprise" data-zone="enterprise"><span>企业违建区</span><b id="enterpriseRisk">高风险</b></button>
+          <button class="zone housing" data-zone="housing"><span>民房群租区</span><b id="housingRisk">高风险</b></button>
+          <button class="zone riverbank" data-zone="riverbank"><span>河道沿线</span><b id="riverRisk">污染</b></button>
+          <button class="zone market" data-zone="market"><span>无证经营点</span><b id="marketRisk">密集</b></button>
+          <div class="command-post"><span>指挥部</span><i></i></div>
+          <div class="map-stat"><small>当前拆除进度</small><strong id="demolitionValue">0.0</strong><span>万平方米</span></div>
+        </div>
+        <div class="stakeholder-strip" id="stakeholderStrip"></div>
+      </section>
+
+      <aside class="decision-panel">
+        <div class="case-header"><span id="eventTag">现场研判</span><b id="eventNumber">01 / 12</b></div>
+        <div class="event-card" id="eventCard">
+          <div class="event-visual" id="eventVisual"><span id="eventIcon">⌂</span><small id="eventSource">基于史料重构</small></div>
+          <h2 id="eventTitle"></h2>
+          <p id="eventText"></p>
+          <div class="voices" id="voices"></div>
+          <div class="choice-list" id="choiceList"></div>
+          <button class="confirm-button" id="confirmBtn" disabled>执行决定</button>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" id="modalBackdrop"></div>
+  <section class="modal" id="resultModal" aria-modal="true" role="dialog">
+    <button class="modal-close" data-close>×</button><div id="resultContent"></div>
+  </section>
+  <section class="modal sources-modal" id="sourcesModal" aria-modal="true" role="dialog">
+    <button class="modal-close" data-close>×</button>
+    <p class="eyebrow">研究依据</p><h2>模拟如何从史料转化而来</h2>
+    <p>事件、数据和干部工作状态主要依据案例原文，以及新华社、人民日报、解放日报、共产党员网和上海律师行业公开资料。为了保证课堂可玩性，部分情境经过合并，选项及数值后果属于教学设计。</p>
+    <ol class="source-list">
+      <li><a href="https://www.shobserver.cn/wx/detail.do?id=7192" target="_blank" rel="noreferrer"><b>解放日报·上观新闻，2015年10月</b></a><span>干部驻村、村干部带头自拆、风险清单和利益情况。</span></li>
+      <li><a href="https://news.12371.cn/2016/09/18/ARTI1474150422928351.shtml" target="_blank" rel="noreferrer"><b>共产党员网，2016年9月18日</b></a><span>51天集中整治、党员干部带头和整治后的组织建设。</span></li>
+      <li><a href="https://www.kankanews.com/detail/og2b4z7jRQ3" target="_blank" rel="noreferrer"><b>许浦日记之一，2015年10月</b></a><span>5个大组、25个小组入户，200余人参与以及联合执法现场。</span></li>
+      <li><a href="https://www.lawyers.org.cn/file/upload/20180112/file/20180112143636_2bbd678156d047f78c03a14df7750f8b.pdf" target="_blank" rel="noreferrer"><b>上海律师行业资料</b></a><span>15名律师进入5个民房组，规范文本、12户疑难个案和清退程序。</span></li>
+      <li><b>《城中村整体性治理——许浦村“拆违”纪实》</b><span>案例基础数据、部门分工、工作制度、利益冲突和后续治理。</span></li>
+    </ol>
+  </section>
+  <section class="modal log-modal" id="logModal" aria-modal="true" role="dialog">
+    <button class="modal-close" data-close>×</button><p class="eyebrow">专班档案</p><h2>工作日志</h2><div id="logEntries"></div>
+  </section>
+
+  <script src="game.js"></script>
+</body>
+</html>
